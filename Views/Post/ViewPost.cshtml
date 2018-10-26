@@ -1,0 +1,53 @@
+﻿@model admin.tandienbien.gov.vn.Models.POST
+@{
+    ViewBag.Title = "Chi tiết bài viết";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var role = int.Parse(TempData["Role"].ToString());
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12" style="padding:10px;">
+            @{
+                if (role == 1 && Model.STATUS_ID != 5 && Model.STATUS_ID != 6)
+                {
+                    <form action="/Post/Upstatus" enctype="multipart/form-data" method="POST" role="form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+                        <div class="form-group">
+                            <label>Chọn loại hình hiển thị</label>
+                            <div class="radio-inline">
+                                <label class="radio-inline">
+                                    <input type="radio" name="STATUS_ID" id="STATUS_ID" value="6" checked> Tin nổi bật
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="STATUS_ID" id="STATUS_ID" value="5"> Tin bình thường
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="STATUS_ID" id="STATUS_ID" value="14"> Tin tiêu điểm
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="STATUS_ID" id="STATUS_ID" value="8"> Không được đăng
+                                </label>
+                                <button type="submit" class="btn btn-success" style="margin-left:15px;"><i class="fa fa-check fa-fw"></i>Phê duyệt</button>
+                            </div>
+                        </div>
+                    </form>
+                }
+            }
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12" style="text-align:center">
+            <h1 class="page-header">@Model.HEADING_LVL1</h1>
+        </div>
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <p><b>@Model.DESCRIPTION</b></p>
+                @Html.Raw(Model.CONTENT)
+            </div>
+        </div>
+    </div>
+</div>
+

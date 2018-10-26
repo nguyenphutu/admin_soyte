@@ -1,0 +1,82 @@
+﻿@model admin.tandienbien.gov.vn.Models.DOCUMENT
+@{
+    ViewBag.Title = "ChangerTaiLieu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var file = (admin.tandienbien.gov.vn.Models.FILE_ATTACH)ViewBag.File;
+    var dctp = (admin.tandienbien.gov.vn.Models.DOCUMENT_TYPE)ViewBag.Document_Type;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Nhập thông tin
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form action="/Tailieu/SaveDocument" enctype="multipart/form-data" method="POST" role="form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+                        @if (Model.ID == 0)
+                        {
+                            <input type="hidden" id="DOCUMENT_TYPE_ID" name="DOCUMENT_TYPE_ID" value="@dctp.ID" />
+                        }
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Tên tài liệu(*)</label>
+                                <input class="form-control" id="NAME" name="NAME" value="@Model.NAME" required>
+                            </div>
+                            <div class="form-group">
+                            </div>
+                            <div class="form-group">
+                                <label>File đính kèm(*)</label>
+                                @if (file.ID != 0)
+                                {
+                                    <label><a href="@file.URL_FILE">@file.FILE_NAME</a>   <a href="#"><i class="fa fa-times fa-fw"></i>Xóa file</a></label>
+                                }
+                                <input type="file" class="form-control" value="" id="FILE_ATTACH" name="FILE_ATTACH">
+                            </div>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="disabledSelect">Chủ đề tài liệu(*)</label>
+                                @if (Model.ID != 0)
+                                {
+                                    var db = new admin.tandienbien.gov.vn.Models.tanddbEntities();
+                                    <select id="DOCUMENT_TYPE_ID" name="DOCUMENT_TYPE_ID" class="form-control">
+                                        @foreach (var dctpy in db.DOCUMENT_TYPE.OrderBy(p => p.ID).ToList())
+                                        {
+                                            <option value="@dctpy.ID" @(Model.DOCUMENT_TYPE_ID == dctpy.ID ? Html.Raw("selected") : Html.Raw(""))>@dctpy.NAME</option>
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    
+                                    <input class="form-control" value="@dctp.NAME" id="DOCUMENT_TYPE_NAME" name="DOCUMENT_TYPE_NAME" disabled>
+                                }
+
+                            </div>
+                            <div class="form-group">
+                                <label>Mô tả tài liệu(*)</label>
+                                <input class="form-control" id="DESCRIPTION" name="DESCRIPTION" value="@Model.DESCRIPTION">
+                            </div>
+                            @{
+                                if (Model.ID != 0)
+                                {
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i>Cập nhật</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Thêm mới </button>
+                                }
+                            }
+                            <button type="reset" class="btn btn-warning"><i class="fa fa-times-circle fa-fw"></i>Nhập lại</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

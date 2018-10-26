@@ -1,0 +1,85 @@
+﻿@model admin.tandienbien.gov.vn.Models.ANSWER
+@{ 
+    var anw_tp = (List<admin.tandienbien.gov.vn.Models.ANSWER_TYPE>)ViewBag.AnswerType;
+}
+<form action="/Cauhoiphapluat/SaveAnswer" enctype="multipart/form-data" method="POST" role="form">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Nhập thông tin
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Tên người hỏi</label>
+                                <input class="form-control" id="NAME" name="NAME" value="@Model.NAME">
+                            </div>
+                            <div class="form-group">
+                                <label>Địa chỉ người hỏi</label>
+                                <input class="form-control" id="ADDRESS" name="ADDRESS" value="@Model.ADDRESS">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input class="form-control" id="EMAIL" name="EMAIL" value="@Model.EMAIL">
+                            </div>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="disabledSelect">Loại câu hỏi(*)</label>
+                                <select id="ANSWER_TYPE_ID" name="ANSWER_TYPE_ID" class="form-control">
+                                    @{
+                                        foreach (var an_tp in anw_tp)
+                                        {
+                                            <option value="@an_tp.ID" @(an_tp.ID == Model.ANSWER_TYPE_ID ? Html.Raw("selected") : Html.Raw(""))>@an_tp.NAME</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Số điện thoại</label>
+                                <input class="form-control" id="PHONE" name="PHONE" value="@Model.PHONE">
+                            </div>
+                            <div class="form-group">
+                                <label>Nội dung câu hỏi</label>
+                                <textarea class="form-control" rows="3" id="QUESTION" name="QUESTION" required>@Model.QUESTION</textarea>
+                            </div>
+                            @{
+                                if (Model.ID != 0)
+                                {
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i>Cập nhật</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Thêm mới </button>
+                                }
+                            }
+                            <button type="reset" class="btn btn-warning"><i class="fa fa-times-circle fa-fw"></i>Nhập lại</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Nhập nội dung trả lời câu hỏi(*)
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <textarea id="ckedito" name="RESPOND" required>@Model.RESPOND</textarea>
+                        <script>
+                            CKEDITOR.replace('ckedito');
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

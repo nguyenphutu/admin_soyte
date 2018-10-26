@@ -1,0 +1,78 @@
+﻿@model admin.tandienbien.gov.vn.Models.USER_PROFILE
+@{ 
+    int edit = (int)TempData["editpr"];
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Nhập thông tin
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form action="/Home/SaveUserprofile" enctype="multipart/form-data" method="POST" role="form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Tên nhân viên(*)</label>
+                                <input class="form-control" id="NAME" name="NAME" value="@Model.NAME" required  @(edit==0 ? Html.Raw("disabled") : Html.Raw(""))>
+                            </div>
+                            <div class="form-group">
+                                <label>EMAIL</label>
+                                <input class="form-control" id="EMAIL" name="EMAIL" value="@Model.EMAIL"  @(edit==0 ? Html.Raw("disabled") : Html.Raw("")) >
+                            </div>
+                            <div class="form-group">
+                                <label>Ngày sinh</label>
+                                @{
+                                    if (Model.BIRTHDAY != null)
+                                    {
+                                        <input type="date" class="form-control" id="BIRTHDAY" name="BIRTHDAY" value="@(((DateTime)Model.BIRTHDAY).ToString("yyyy-MM-dd"))"  @(edit==0 ? Html.Raw("disabled") : Html.Raw("")) >
+                                    }
+                                    else
+                                    {
+                                        <input type="date" class="form-control" id="BIRTHDAY" name="BIRTHDAY"  @(edit==0 ? Html.Raw("disabled") : Html.Raw("")) >
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="disabledSelect">Đơn vị(*)</label>
+                                <select id="ADDRESS" name="ADDRESS" class="form-control"  @(edit==0 ? Html.Raw("disabled") : Html.Raw(""))>
+                                    @{
+                                        var donvis = (List<admin.tandienbien.gov.vn.Models.DEPENDENT_UNITS>)ViewBag.Donvi;
+                                        foreach (var dv in donvis)
+                                        {
+                                            if (Model.ADDRESS == dv.NAME)
+                                            {
+                                                <option value="@dv.ID" selected>@dv.NAME</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@dv.ID">@dv.NAME</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Số điện thoại</label>
+                                <input class="form-control" rows="3" id="PHONE_NUMBER" name="PHONE_NUMBER" value="@Model.PHONE_NUMBER" @(edit==0 ? Html.Raw("disabled") : Html.Raw("")) >
+                            </div>
+                            @{
+                                if (Model.ID != 0 && edit==1)
+                                {
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i>Cập nhật</button>
+                                }
+                            }
+                           
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

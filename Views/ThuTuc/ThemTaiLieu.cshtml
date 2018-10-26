@@ -1,0 +1,94 @@
+﻿@model admin.tandienbien.gov.vn.Models.THU_TUC_HANH_CHINH
+@{
+    ViewBag.Title = "Cập nhật thông tin thủ tục";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var author = (List<admin.tandienbien.gov.vn.Models.USER_PROFILE>)ViewBag.Author;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Cập nhật thông tin thủ tục</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<form action="/ThuTuc/LuuTaiLieu" enctype="multipart/form-data" method="POST" role="form">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="ThuTucID" name="ThuTucID" value="@Model.ID" />
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Nhập thông tin
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div id="them_moi_tai_lieu">
+                                <div class="form-group">
+                                    <label>Tên tài liệu(*)</label>
+                                    <input class="form-control" id="FileName" name="FileName">
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Tài liệu đính kèm
+                                    </div>
+                                    <div class="panel-body">
+                                        <input type="file" id="uploadFile" name="uploadFile" /><br />
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="chon_tai_lieu" style="display: none">
+                                <div class="form-group">
+                                    <label>Chọn tài liệu(*)</label>
+                                    <select id="TAI_LIEU_ID" name="TAI_LIEU_ID" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                                        @{
+                                            var docs = (List<admin.tandienbien.gov.vn.Models.FILE_THU_TUC>)ViewBag.DS_TAI_LIEU;
+                                            <option value="0">Chọn tài liệu</option>
+                                            foreach (var doc in docs)
+                                            {
+                                                <option value="@doc.ID">@doc.FILE_NAME</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <label class="btn btn-primary" id="lable_them_tai_lieu"><i class="fa fa-plus fa-fw"></i> Thêm từ danh sách </label>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Thêm mới </button>
+                        </div>
+                        <div class="col-lg-6">                            
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Danh sách tài liệu
+                                </div>
+                                <div class="panel-body">
+                                    @foreach(var file in Model.MAP_THU_TUC_FILE)
+                                    {
+                                        <p><a href="@file.FILE_THU_TUC.URL_FILE">@file.FILE_THU_TUC.FILE_NAME</a></p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $("#lable_them_tai_lieu").click(function () {
+            if ($('#them_moi_tai_lieu:visible').length) {
+                $('#chon_tai_lieu').show();
+                $('#them_moi_tai_lieu').hide();
+                $("#lable_them_tai_lieu").html("Tải lên")
+            }
+            else {
+                $('#them_moi_tai_lieu').show();
+                $('#chon_tai_lieu').hide();
+                $("#lable_them_tai_lieu").html("Thêm từ danh sách")
+            }
+
+        });
+    });
+</script>

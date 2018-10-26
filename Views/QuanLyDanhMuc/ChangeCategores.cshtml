@@ -1,0 +1,136 @@
+﻿@model admin.tandienbien.gov.vn.Models.CATEGORy
+@{
+    ViewBag.Title = "Cập nhât chuyên mục bài viết";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Cập nhật thông tin chuyên mục bài viết</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Nhập thông tin
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form action="/QuanLyDanhMuc/SaveCategory" enctype="multipart/form-data" method="POST" role="form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Tên chuyên mục(*)</label>
+                                <input class="form-control" id="CAT_NAME" name="CAT_NAME" value="@Model.CAT_NAME" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Thứ tự hiển thị(*)</label>
+                                <input class="form-control" id="CAT_NUMBER" name="CAT_NUMBER" value="@Model.CAT_NUMBER" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mô tả về chuyên mục</label>
+                                <textarea class="form-control" rows="3" id="DESCRTIPTION" name="DESCRTIPTION">@Model.DESCRTIPTION</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Trạng thái hoạt động</label>
+                                <div class="radio-inline">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="STATUS_ID" id="STATUS_ID" value="true" @(Model.STATUS_ID == 1 || Model.STATUS_ID == null ? Html.Raw("checked") : Html.Raw(""))> Hoạt động
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="STATUS_ID" id="STATUS_ID" value="false" @(Model.STATUS_ID == 0 ? Html.Raw("checked") : Html.Raw(""))> Không hoạt động 
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Hiển thị danh sách tin lên trang chủ</label>
+                                <div class="radio-inline">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="DISPLAY_HOME" id="DISPLAY_HOME" value="true" @(Model.DISPLAY_HOME == 1 || Model.DISPLAY_HOME == null ? Html.Raw("checked") : Html.Raw(""))> Hiển thị
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="DISPLAY_HOME" id="DISPLAY_HOME" value="false" @(Model.DISPLAY_HOME == 0 ? Html.Raw("checked") : Html.Raw(""))> Không hiển thị
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="disabledSelect">Menu của chuyên mục(*)</label>
+                                <select id="MENU_ID" name="MENU_ID" class="form-control">
+                                    @{
+                                        var Menucat = (List<admin.tandienbien.gov.vn.Models.CONFIG_MENU>)ViewBag.Menucat;
+                                        foreach (var mnc in Menucat)
+                                        {
+                                            if (Model.MENU_ID == mnc.ID)
+                                            {
+                                                <option value="@mnc.ID" selected>@mnc.MENU_NAME</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@mnc.ID">@mnc.MENU_NAME</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="disabledSelect">Kiểu hiển thị trên trang chủ</label>
+                                <select id="CAT_TYPE" name="CAT_TYPE" class="form-control">
+                                    <option value="0" @(Model.CAT_TYPE == 0 || Model.CAT_TYPE == null ? Html.Raw("selected") : Html.Raw(""))>Không liệt kê tin trên trang chủ</option>
+                                    <option value="1" @(Model.CAT_TYPE == 1 ? Html.Raw("selected") : Html.Raw(""))>Hiển thị cột đơn rút gọn lời dẫn</option>
+                                    <option value="2" @(Model.CAT_TYPE == 2 ? Html.Raw("selected") : Html.Raw(""))>Hiển thị cột đôi không Slide</option>
+                                    <option value="3" @(Model.CAT_TYPE == 3 ? Html.Raw("selected") : Html.Raw(""))>Hiển thị cột đôi có Slide</option>
+                                    <option value="4" @(Model.CAT_TYPE == 4 ? Html.Raw("selected") : Html.Raw(""))>Hiển thị khối trong trang chủ</option>
+                                    <option value="5" @(Model.CAT_TYPE == 5 ? Html.Raw("selected") : Html.Raw(""))>Hiển thị cột đơn có lời dẫn</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="disabledSelect">Chuyên mục cha</label>
+                                <select id="CAT_LVL1" name="CAT_LVL1" class="form-control">
+                                    @{
+                                        var listCatLv1 = (List<admin.tandienbien.gov.vn.Models.CATEGORy>)ViewBag.CatLv1;
+                                        foreach (var catlv1 in listCatLv1)
+                                        {
+                                            if (Model.CAT_LVL1 == catlv1.ID)
+                                            {
+                                                <option value="@catlv1.ID" selected>@catlv1.CAT_NAME</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@catlv1.ID">@catlv1.CAT_NAME</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Đường dẫn(*)</label>
+                                <input class="form-control" rows="3" id="URL_TITLE" name="URL_TITLE" value="@Model.URL_TITLE" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Icon CSS</label>
+                                <input class="form-control" rows="3" id="ICON_CSS" name="ICON_CSS" value="@Model.ICON_CSS">
+                            </div>
+                            @{
+                                if (Model.ID != 0)
+                                {
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i>Cập nhật</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Thêm mới </button>
+                                }
+                            }
+                            <button type="reset" class="btn btn-warning"><i class="fa fa-times-circle fa-fw"></i>Nhập lại</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

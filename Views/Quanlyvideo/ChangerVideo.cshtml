@@ -1,0 +1,48 @@
+﻿@model admin.tandienbien.gov.vn.Models.CONFIG_VIDEO
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Nhập thông tin
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form action="/Quanlyvideo/SaveVideo" enctype="multipart/form-data" method="POST" role="form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Tên Video(*)</label>
+                                <input class="form-control" id="HEADING" name="HEADING" value="@Model.HEADING" required>
+                            </div>
+                            <div class="form-group">
+                            </div>
+                            <div class="form-group">
+                                <label>Mô tả</label>
+                                <input class="form-control" id="CONTENT" name="CONTENT" value="@Model.CONTENT" required>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Đường dẫn Video(*)</label>
+                                <input class="form-control" id="URL_VIDEO" name="URL_VIDEO" value="@Model.URL_VIDEO" required>
+                            </div>
+                            @{
+                                if (Model.ID != 0)
+                                {
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i>Cập nhật</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Thêm mới </button>
+                                }
+                            }
+                            <button type="reset" class="btn btn-warning"><i class="fa fa-times-circle fa-fw"></i>Nhập lại</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

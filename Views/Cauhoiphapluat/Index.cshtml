@@ -1,0 +1,121 @@
+﻿@model List<admin.tandienbien.gov.vn.Models.ANSWER>
+@{
+    ViewBag.Title = "Giải đáp câu hỏi pháp luật";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Quản hỏi đáp pháp luật</h2>
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Danh sách câu hỏi
+                <a data-toggle="modal" data-target="#myModal" onclick="create_anw()" class="btn btn-primary" style="float:right; margin-top: -7px;"><i class="fa fa-plus fa-fw"></i> Thêm mới câu hỏi đáp</a>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th style="width:10%; text-align:center;">ID</th>
+                            <th style="width:25%; text-align:center;">Tên người gửi</th>
+                            <th style="width:15%; text-align:center;">Ngày gửi</th>
+                            <th style="width:35%; text-align:center;">Loại câu hỏi</th>
+                            <th style="width:15%; text-align:center;">Trạng thái</th>
+                            <th style="width:10%; text-align:center;">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var anw in Model)
+                            {
+                                <tr class="odd gradeX">
+                                    <td align="center">@anw.ID</td>
+                                    <td>@anw.NAME</td>
+                                    <td>@DateTime.Parse(anw.DATE_CREATE.ToString()).ToString("dd/MM/yyyy")</td>
+                                    <td>@anw.ANSWER_TYPE.NAME</td>
+                                    <td>@(anw.STATUS==1 ? Html.Raw("Đã được đăng") : Html.Raw("Không  được đăng"))</td>
+                                    <td style="width:10%">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                                Chọn hành động
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu pull-right" role="menu">
+                                                <li>
+                                                    <a href="#" data-toggle="modal" data-target="#myModal" onclick="changer_anw(@anw.ID)">Cập nhật & Trả lời</a>
+                                                </li>
+
+                                                @if (anw.STATUS == 0 && anw.RESPOND != "" && anw.RESPOND != null)
+                                                {
+                                                    <li>
+                                                        <a href="/Cauhoiphapluat/UpstatusAnw?anw_id=@anw.ID">Cho phép đăng</a>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    if (anw.STATUS == 1)
+                                                    {
+                                                        <li>
+                                                            <a href="/Cauhoiphapluat/UpstatusAnw?anw_id=@anw.ID">Không cho phép đăng</a>
+                                                        </li>
+                                                    }
+                                                }
+                                                <li>
+                                                    <a href="/Cauhoiphapluat/DeleteAnw?anw_id=@anw.ID"   onclick="return confirm('Bạn có chắc chắn xóa câu hỏi không?')">Xóa câu hỏi</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Cập nhật câu hỏi đáp pháp luật</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<script>
+    function changer_anw(i) {
+        $.ajax({
+            url: '/Cauhoiphapluat/ChangerAnw?anw_id=' + i,
+            type: 'get',
+            datatype: 'json',
+            success: function (data) {
+                $('div#modal-body').html(data);
+            }
+        });
+    }
+    function create_anw() {
+        $.ajax({
+            url: '/Cauhoiphapluat/ChangerAnw?',
+            type: 'get',
+            datatype: 'json',
+            success: function (data) {
+                $('div#modal-body').html(data);
+            }
+        });
+    }
+</script>
+

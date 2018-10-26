@@ -1,0 +1,230 @@
+﻿@using System.Linq
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Sở Y tế tỉnh Điện Biên</title>
+    @Styles.Render("~/Content/css")
+
+    @{
+        var user = (admin.tandienbien.gov.vn.Models.USER)ViewBag.NguoiDung;
+        var userprofile = (admin.tandienbien.gov.vn.Models.USER_PROFILE)ViewBag.NguoiDungProfile;
+        var menuadmin = (List<admin.tandienbien.gov.vn.Objects.MenuAdmin>)ViewBag.Menu;
+        var LayoutAdmin = (admin.tandienbien.gov.vn.Objects.LayoutAdmin)ViewBag.LayoutAdmin;
+    }
+    <script type="text/javascript" src="~/Content/vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/Scripts/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="/Scripts/ckfinder/ckfinder.js"></script>
+    <!-- Latest compiled and minified CSS -->
+
+</head>
+<body>
+
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index">Quản trị WebSite Sở Y tế tỉnh Điện Biên</a>
+            </div>
+            <!-- /.navbar-header -->
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="/Post/CheckPost">
+                                <div>
+                                    <i class="fa fa-comment fa-fw"></i> Bài mới chờ duyệt
+                                    <span class="pull-right text-muted small">@LayoutAdmin.baivietchodang bài</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/Cauhoiphapluat/Index?st_id=0">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> Câu hỏi cần giải đáp
+                                    <span class="pull-right text-muted small">@LayoutAdmin.cauhoichotraloi câu</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/Home/About">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> Tổng số lượt truy cập
+                                    <span class="pull-right text-muted small">@LayoutAdmin.soluottruycap lượt</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a data-toggle="modal" data-target="#myModal" onclick="profile(@userprofile.ID, 0)"><i class="fa fa-user fa-fw"></i> @userprofile.NAME</a>
+                        </li>
+                        <li>
+                            <a data-toggle="modal" data-target="#myModal" onclick="profile(@userprofile.ID, 1)"><i class="fa fa-gear fa-fw"></i> Thay đổi thông tin</a>
+                        </li>
+                        <li>
+                            <a data-toggle="modal" data-target="#myModal" onclick="changerpass(@user.ID)"><i class="fa fa-key fa-fw"></i> Thay đổi mật khẩu</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/Account/Logout"><i class="fa fa-sign-out fa-fw"></i> Đăng xuất</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <script>
+                function profile(i,j)
+                {
+                    $.ajax({
+                        url: '/Home/Profiles?up_id=' + i + "&edit_id=" + j,
+                        type: 'get',
+                        datatype: 'json',
+                        success: function (data) {
+                            $('div#modal-body').html(data);
+                        }
+                    });
+                }
+                function changerpass(i)
+                {
+                    $.ajax({
+                        url: '/Home/ChangerPass?us_id=' + i,
+                        type: 'get',
+                        datatype: 'json',
+                        success: function (data) {
+                            $('div#modal-body').html(data);
+                        }
+                    });
+                }
+            </script>
+            <!-- /.navbar-top-links -->
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="/Home/index"><i class="fa fa-th-list fa-fw"></i> Hệ thống</a>
+                        </li>
+                        @{
+                            foreach (var mnu in menuadmin)
+                            {
+                                <li>
+                                    @if (mnu.Submenu.Count != 0)
+                                    {
+                                        <a href="@mnu.Url"><i class="fa @mnu.Icon_css fa-fw"></i> @mnu.Name<span class="fa arrow"></span></a>
+                                        <ul class="nav nav-second-level">
+                                            @foreach (var submnu in mnu.Submenu)
+                                            {
+                                                <li>
+                                                    <a href="@submnu.Url">@submnu.Name</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <a href="@mnu.Url"><i class="fa @mnu.Icon_css fa-fw"></i> @mnu.Name</a>
+                                    }
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Cập nhật thông tin</h4>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+        <div id="page-wrapper">
+
+            @RenderBody()
+
+            <footer></footer>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+        @if (TempData["msg"] != null)
+        {
+            if (TempData["msg"].ToString() == "ok")
+            {
+                <script>alert("Cập nhật thông tin thành công");</script>
+            }
+            if (TempData["msg"].ToString() == "err")
+            {
+                <script>alert("Có nỗi xảy tra trong quá trình cập nhật");</script>
+            }
+            if (TempData["msg"].ToString() == "userok")
+            {
+                <script>alert("Bạn đã tạo mới user thành công. Mật khẩu mặc đình 123456");</script>
+            }
+            if (TempData["msg"].ToString() == "notrole")
+            {
+                <script>alert("Bạn không có quyền làm thực hiện chức năng này");</script>
+            }
+            if (TempData["msg"].ToString() == "errfile")
+            {
+                <script>alert("File đính kèm tài liệu không được để trống ");</script>
+            }
+            if (TempData["msg"].ToString() == "errpassnot")
+            {
+                <script>alert("Mật khẩu cũ không đúng");</script>
+            }
+            if (TempData["msg"].ToString() == "errpassdup")
+            {
+                <script>alert("Nhập lại mật khẩu không đúng");</script>
+            }
+        }
+        
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').DataTable({
+                    responsive: true
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>

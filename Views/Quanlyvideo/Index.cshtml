@@ -1,0 +1,113 @@
+﻿@model List<admin.tandienbien.gov.vn.Models.CONFIG_VIDEO>
+@{
+    ViewBag.Title = "Quản lý video";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Quản lý Video</h2>
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Danh sách Video
+                <a data-toggle="modal" data-target="#myModal" onclick="create_vd()" class="btn btn-primary" style="float:right; margin-top: -7px;"><i class="fa fa-plus fa-fw"></i> Thêm Video mới</a>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th style="width:10%; text-align:center;">ID</th>
+                            <th style="width:45%; text-align:center;">Tên Video</th>
+                            <th style="width:35%; text-align:center;">URL</th>
+                            <th style="width:35%; text-align:center;">Trạng thái</th>
+                            <th style="width:25%; text-align:center;">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var vd in Model)
+                            {
+                                <tr class="odd gradeX">
+                                    <td align="center">@vd.ID</td>
+                                    <td>@vd.HEADING</td>
+                                    <td>@vd.URL_VIDEO</td>
+                                    <td>@vd.STATUS.NAME</td>
+                                    <td style="width:10%">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                                Chọn hành động
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu pull-right" role="menu">
+                                                <li>
+                                                    <a href="#" data-toggle="modal" data-target="#myModal" onclick="update_vd(@vd.ID)">Sửa thông tin</a>
+                                                </li>
+                                                <li>
+                                                    @if (vd.STATUS_ID == 12)
+                                                    {
+                                                        <a href="/Quanlyvideo/UpstatusVideo?vd_id=@vd.ID">Ngừng hoạt động</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/Quanlyvideo/UpstatusVideo?vd_id=@vd.ID">Kích hoạt</a>
+                                                    }
+                                                </li>
+                                                <li>
+                                                    <a href="/Quanlyvideo/DeleteVideo?vd_id=@vd.ID"  onclick="return confirm('Bạn có chắc chắn xóa Video không?')">Xóa video</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Thêm mới video</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<script>
+    function create_vd() {
+        $.ajax({
+            url: '/Quanlyvideo/ChangerVideo',
+            type: 'get',
+            datatype: 'json',
+            success: function (data) {
+                $('div#modal-body').html(data);
+            }
+        });
+    }
+    function update_vd(i)
+    {
+        $.ajax({
+            url: '/Quanlyvideo/ChangerVideo?vd_id=' + i,
+            type: 'get',
+            datatype: 'json',
+            success: function (data) {
+                $('div#modal-body').html(data);
+            }
+        });
+    }
+</script>
+

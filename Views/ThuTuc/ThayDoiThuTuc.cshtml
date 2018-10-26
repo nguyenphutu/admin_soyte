@@ -1,0 +1,139 @@
+﻿@model admin.tandienbien.gov.vn.Models.THU_TUC_HANH_CHINH
+@{
+    ViewBag.Title = "Cập nhật thông tin thủ tục hành chính";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Cập nhật thông tin thủ tục hành chính</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<form action="/ThuTuc/LuuThuTuc" method="POST" role="form">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Nhập thông tin
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Tên thủ tục(*)</label>
+                                <input class="form-control" id="TEN_THU_TUC" name="TEN_THU_TUC" value="@Model.TEN_THU_TUC" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mã thủ tục(*)</label>
+                                <input class="form-control" id="MA_THU_TUC" name="MA_THU_TUC" value="@Model.MA_THU_TUC" required>
+                            </div>   
+                            <div class="form-group">
+                                <label>Cơ quan công bố</label>
+                                <input class="form-control" id="CO_QUAN_CONG_BO" name="CO_QUAN_CONG_BO" value="@Model.CO_QUAN_CONG_BO">
+                            </div>
+                            <div class="form-group">
+                                <label>Cấp thực hiện</label>
+                                <select id="CAP_THUC_HIEN" name="CAP_THUC_HIEN" class="form-control">
+                                    @{
+                                        var level = (List<admin.tandienbien.gov.vn.Models.CAP_THU_TUC>)ViewBag.Cap_thu_tuc;
+                                        foreach (var l in level)
+                                        {
+                                            <option value="@l.ID" @(l.ID == Model.CAP_THUC_HIEN ? Html.Raw("selected") : Html.Raw(""))>@l.TEN_CAP</option>
+                                        }
+                                    }
+                                </select>
+                            </div>     
+                            <div class="form-group">
+                                <label>Loại thủ tục hành chính</label>
+                                <input class="form-control" id="LOAI_TTHC" name="LOAI_TTHC" value="@Model.LOAI_TTHC">
+                            </div>                      
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="disabledSelect">Lĩnh vực(*)</label>
+                                <select id="LINH_VUC_ID" name="LINH_VUC_ID" class="form-control">
+                                    @{
+                                        var cat = (List<admin.tandienbien.gov.vn.Models.CATEGORy>)ViewBag.Cat;
+                                        foreach (var c in cat)
+                                        {
+                                            <option value="@c.ID" @(c.ID == Model.LINH_VUC_ID ? Html.Raw("selected") : Html.Raw(""))>@c.CAT_NAME</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Lệ phí</label>
+                                <input class="form-control" id="PHI_LE_PHI" name="PHI_LE_PHI" value="@Model.PHI_LE_PHI")>
+                            </div>
+                            <div class="form-group">
+                                <label>Thời hạn giải quyết</label>
+                                <input class="form-control" id="THOI_HAN_GIAI_QUYET" name="THOI_HAN_GIAI_QUYET" value="@Model.THOI_HAN_GIAI_QUYET" )>
+                            </div>
+                            <div class="form-group">
+                                <label>Đối tượng thực hiện</label>
+                                <input class="form-control" id="DOI_TUONG_THUC_HIEN" name="DOI_TUONG_THUC_HIEN" value="@Model.DOI_TUONG_THUC_HIEN" )>
+                            </div>  
+                            <div class="form-group">
+                                <label>Cơ quan thực hiện</label>
+                                <input class="form-control" id="CO_QUAN_THUC_HIEN" name="CO_QUAN_THUC_HIEN" value="@Model.CO_QUAN_THUC_HIEN" )>
+                            </div>  
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Trình tự thực hiện</label>
+                                <textarea class="form-control" id="TRINH_TU_THUC_HIEN" name="TRINH_TU_THUC_HIEN" rows="5">@Model.TRINH_TU_THUC_HIEN</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Thành phần hồ sơ</label>
+                                <textarea class="form-control" id="THANH_PHAN_HO_SO" name="THANH_PHAN_HO_SO" rows="5">@Model.THANH_PHAN_HO_SO</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Căn cứ pháp lý</label>
+                                <textarea class="form-control" id="CAN_CU_PHAP_LY" name="CAN_CU_PHAP_LY" rows="5">@Model.CAN_CU_PHAP_LY</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Cơ quan phối hợp</label>
+                                <input class="form-control" id="CO_QUAN_PHOI_HOP" name="CO_QUAN_PHOI_HOP" value="@Model.CO_QUAN_PHOI_HOP" )>
+                            </div>  
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Cách thức thực hiện</label>
+                                <textarea class="form-control" id="CACH_THUC_THUC_HIEN" name="CACH_THUC_THUC_HIEN" rows="5">@Model.CACH_THUC_THUC_HIEN</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Yêu cầu điều kiện</label>
+                                <textarea class="form-control" id="YEU_CAU_DIEU_KIEN" name="YEU_CAU_DIEU_KIEN" rows="5">@Model.YEU_CAU_DIEU_KIEN</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Số bộ hồ sơ</label>
+                                <input class="form-control" id="SO_BO_HO_SO" name="SO_BO_HO_SO" value="@Model.SO_BO_HO_SO" )>
+                            </div>  
+                            <div class="form-group">
+                                <label>Kết quả thực hiện</label>
+                                <input class="form-control" id="KET_QUA_THUC_HIEN" name="KET_QUA_THUC_HIEN" value="@Model.KET_QUA_THUC_HIEN" )>
+                            </div>  
+                            @{
+                                if (Model.ID != 0)
+                                {
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i>Cập nhật</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Thêm mới </button>
+                                }
+                            }
+                            <button type="reset" class="btn btn-warning"><i class="fa fa-times-circle fa-fw"></i>Nhập lại</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

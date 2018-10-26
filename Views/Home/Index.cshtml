@@ -1,0 +1,290 @@
+﻿@model admin.tandienbien.gov.vn.Objects.LayoutHome
+@{
+    ViewBag.Title = "Quản trị";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var LayoutAdmin = (admin.tandienbien.gov.vn.Objects.LayoutAdmin)ViewBag.LayoutAdmin;
+}
+<div class="row">
+    <div class="col-lg-12">
+            <h1 class="page-header">Thông tin chung http://soytelaichau.gov.vn/</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-pencil-square-o fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">@LayoutAdmin.baivietchodang</div>
+                        <div>Bài viết chờ đăng</div>
+                    </div>
+                </div>
+            </div>
+            <a href="/Post/CheckPost">
+                <div class="panel-footer">
+                    <span class="pull-left">Xem danh sách</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">@Model.tongsobaiviet</div>
+                        <div>Tổng số bài viết</div>
+                    </div>
+                </div>
+            </div>
+            <a href="/Post/Index">
+                <div class="panel-footer">
+                    <span class="pull-left">Xem chi tiết</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-question-circle fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">@LayoutAdmin.cauhoichotraloi</div>
+                        <div>Câu hỏi mới</div>
+                    </div>
+                </div>
+            </div>
+            <a href="/Cauhoiphapluat/Index?st_id=0">
+                <div class="panel-footer">
+                    <span class="pull-left">Xem chi tiết</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-calendar fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">@Model.lichxetxu</div>
+                        <div>Tổng số tài liệu</div>
+                    </div>
+                </div>
+            </div>
+            <a href="/Lichxetxu/Index">
+                <div class="panel-footer">
+                    <span class="pull-left">Xem chi tiết</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        
+        <!-- /.panel -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> Danh sách bài viết chờ đăng
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th align="center">STT</th>
+                                <th align="center">Tiêu đề bài viết</th>
+                                <th align="center">Ngày gửi</th>
+                                <th align="center">Đơn vị</th>
+                                <th align="center">Tên tác giả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var p in Model.baivietchodang)
+                            {
+                                <tr>
+                                    <td>@(int.Parse(Model.baivietchodang.IndexOf(p).ToString()) + 1)</td>
+                                    <td>@p.Heading_lv1</td>
+                                    <td align="right">@DateTime.Parse(p.Post_date.ToString()).ToString("dd/MM/yyyy")</td>
+                                    <td>@p.Dependent_units</td>
+                                    <td>@p.Author</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                    
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-question-circle fa-fw"></i> Hỏi đáp pháp luật mới
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <ul class="timeline">
+                    @foreach (var ans in Model.cauhoitrochaloi)
+                    {
+                        if (Model.cauhoitrochaloi.IndexOf(ans) % 2 == 0)
+                        {
+                            WriteLiteral("<li>");
+                        }
+                        else
+                        {
+                            WriteLiteral("<li class=\"timeline-inverted\">");
+                        }
+                        <div class="timeline-badge">
+                            <a href="/Cauhoiphapluat/Index?st_id=0"><i class="fa fa-comments-o"></i></a>
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4 class="timeline-title">@ans.tennguoihoi</h4>
+                                <p>
+                                    <small class="text-muted"><i class="fa fa-clock-o"></i>@DateTime.Parse(ans.ngaygui.ToString()).ToString("dd/MM/yyyy")</small>
+                                </p>
+                            </div>
+                            <div class="timeline-body">
+                                <p style="text-align:justify;">@ans.noidungcauhoi</p>
+                            </div>
+                        </div>
+                        WriteLiteral("</li>");
+                    }
+                </ul>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-8 -->
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i> Thống kê chung
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="list-group">
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-comment fa-fw"></i> Tổng số bài viết
+                        <span class="pull-right text-muted small">
+                            <em>@Model.tongsobaiviet</em>
+                        </span>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-twitter fa-fw"></i> Tổng số chuyên mục tin
+                        <span class="pull-right text-muted small">
+                            <em>@Model.tongsochuyenmuctin</em>
+                        </span>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-envelope fa-fw"></i> Tổng số tài liệu
+                        <span class="pull-right text-muted small">
+                            <em>@Model.tongsotailieu</em>
+                        </span>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-tasks fa-fw"></i> Tổng số câu hỏi pháp luật
+                        <span class="pull-right text-muted small">
+                            <em>@Model.tongsocauhoiphapluat</em>
+                        </span>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-upload fa-fw"></i> Tổng số bộ thủ tục hành chính
+                        <span class="pull-right text-muted small">
+                            <em>@Model.tongsolichxetxu</em>
+                        </span>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-bolt fa-fw"></i> Tổng số địa chỉ liên kết
+                        <span class="pull-right text-muted small">
+                            <em>@Model.tongsodiachilienket</em>
+                        </span>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-warning fa-fw"></i> Tổng số người dùng
+                        <span class="pull-right text-muted small">
+                            <em>@Model.tongsouserdangnhap</em>
+                        </span>
+                    </a>
+                </div>
+               
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> Thống kê bài viết theo đơn vị
+            </div>
+            <div class="panel-body">
+                <div id="morris-donut-chart">
+                   <script>
+                       var datapostofdep = [
+                               @foreach(var pod in Model.baivietdonvi)
+                               {
+                                   if(Model.baivietdonvi.IndexOf(pod) == 0)
+                                   {
+                                       WriteLiteral("{ label: '"+ pod.tendonvi + "', value: "+ pod.sobaiviet + " }");
+                                   }
+                                   else
+                                   {
+                                       WriteLiteral(", { label: '" + pod.tendonvi + "', value: " + pod.sobaiviet + " }");
+                                   }
+                               }
+                       ];
+                   </script>
+                
+                 </div>
+                <a href="/Home/Contact" class="btn btn-default btn-block">Xem chi tiết</a>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i> Thống kê bài viết theo đơn vị
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="list-group">
+                    @foreach (var tc in Model.lichxetxudonvi)
+                    {
+                        <a href="/Lichxetxu/Viewlxx?dv_id=@tc." class="list-group-item">
+                            <i class="fa fa-th-list fa-fw"></i> @tc.tendonvi <em>(@tc.sophienxetxu)</em>
+                        </a>
+                    }
+                </div>
+
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel .chat-panel -->
+    </div>
+    <!-- /.col-lg-4 -->
+</div>
+

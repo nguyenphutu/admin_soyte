@@ -1,0 +1,84 @@
+﻿@model List<admin.tandienbien.gov.vn.Objects.ThuTuc>
+@{
+    ViewBag.Title = "Quản lý thủ tục";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Quản lý thủ tục</h2>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Danh sách thủ tục
+                <a href="/ThuTuc/thayDoiThuTuc" class="btn btn-primary" style="float:right; margin-top: -7px;"><i class="fa fa-plus fa-fw"></i> Thêm mới thủ tục</a>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center;">ID</th>
+                            <th style="text-align:center;">Tên thủ tục</th>
+                            <th style="text-align:center;">Mã thủ tục</th>
+                            <th style="text-align:center;">Loại thủ tục hành chính</th>
+                            <th style="text-align:center;">Lĩnh vực</th>
+                            <th style="text-align:center;">Số bộ hồ sơ</th>
+                            <th style="text-align:center;">Lệ phí</th>
+                            <th style="text-align:center;">Thời hạn giải quyết</th>
+                            <th style="text-align:center;">Đối tượng thực hiện</th>
+                            <th style="text-align:center;">Cơ quan thực hiện</th>
+                            <th style="text-align:center;">Ngày tạo</th>
+                            <th style="text-align:center;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var item in Model)
+                            {
+                                <tr class="odd gradeX">
+                                    <td style="text-align:center">@item.ID</td>
+                                    <td>@item.TEN_THU_TUC</td>
+                                    <td class="right">@item.MA_THU_TUC</td>
+                                    <td class="center">@item.LOAI_TTHC</td>
+                                    <td class="center">@item.LINH_VUC.CAT_NAME</td>
+                                    <td class="center">@item.SO_BO_HO_SO</td>
+                                    <td class="center">@item.PHI_LE_PHI</td>
+                                    <td class="center">@item.THOI_HAN_GIAI_QUYET</td>
+                                    <td class="center">@item.DOI_TUONG_THUC_HIEN</td>
+                                    <td class="center">@item.CO_QUAN_THUC_HIEN</td>
+                                    <td class="center">@item.NGAY_TAO.ToString("dd/MM/yyyy")</td>
+                                    <td class="center" style="width:10%">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                                Chọn hành động
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu pull-right" role="menu">
+                                                <li>
+                                                    <a href="/ThuTuc/XemThuTuc?thu_tuc_id=@item.ID" target="_blank">Xem chi tiết thủ tục</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/ThuTuc/ThemTaiLieu?thu_tuc_id=@item.ID" target="_blank">Thêm tài liệu</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/ThuTuc/ThayDoiThuTuc?thu_tuc_id=@item.ID">Sửa thủ tục</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

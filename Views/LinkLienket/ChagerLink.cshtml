@@ -1,0 +1,56 @@
+﻿@model admin.tandienbien.gov.vn.Models.LINK_CONFIG
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Nhập thông tin
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form action="/LinkLienket/SaveLink" enctype="multipart/form-data" method="POST" role="form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Tên địa chỉ liên kết(*)</label>
+                                <input class="form-control" id="LINK_NAME" name="LINK_NAME" value="@Model.LINK_NAME" required>
+                            </div>
+                            <div class="form-group">
+                            </div>
+                            <div class="form-group">
+                                <img src="@Model.URL_IMG" width="200" height="200" />
+                                <label>Ảnh bìa link</label>
+                                <input type="file" class="form-control" value="" id="IMG_THUMS" name="IMG_THUMS" >
+                            </div>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="disabledSelect">Kiểu hiển thị(*)</label>
+                                <select id="TYPE" name="TYPE" class="form-control">
+                                    <option value="false" @(Model.TYPE == false ? Html.Raw("selected") : Html.Raw(""))>Hiển thị dạng list</option>
+                                    <option value="true" @(Model.TYPE == true ? Html.Raw("selected") : Html.Raw(""))>Hiển thị hình ảnh đại diện</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Địa chỉ(*)</label>
+                                <input class="form-control" id="URL" name="URL" value="@Model.URL" required>
+                            </div>
+                            @{
+                                if (Model.ID != 0)
+                                {
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i>Cập nhật</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Thêm mới </button>
+                                }
+                            }
+                            <button type="reset" class="btn btn-warning"><i class="fa fa-times-circle fa-fw"></i>Nhập lại</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

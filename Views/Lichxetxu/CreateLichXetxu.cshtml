@@ -1,0 +1,89 @@
+﻿@model admin.tandienbien.gov.vn.Models.TRAIL_CALENDAR
+    @{ 
+        var capxx = (List<admin.tandienbien.gov.vn.Models.LEVEL_TRIAL>)ViewBag.Trail_level;
+        var donvi = (admin.tandienbien.gov.vn.Models.DEPENDENT_UNITS)ViewData["Donvi"];
+    }
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Nhập thông tin
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form action="/Lichxetxu/SaveLichxx" enctype="multipart/form-data" method="POST" role="form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+                        <input type="hidden" id="DEPENDENT_UNITS_ID" name="DEPENDENT_UNITS_ID" value="@donvi.ID" />
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Tên vụ án(*)</label>
+                                <input class="form-control" id="CASE_NAME" name="CASE_NAME" value="@Model.CASE_NAME" required>
+                            </div>
+                            <div class="form-group">
+                                @if (Model.ID == 0)
+                                {
+                                    <label>Đơn vị</label>
+                                    <input class="form-control" id="Donvi" name="Donvi" value="@donvi.NAME" disabled>
+                                }
+                                else
+                                {
+                                    <label for="disabledSelect">Đơn vị(*)</label>
+                                    <select id="DEPENDENT_UNITS_ID" name="DEPENDENT_UNITS_ID" class="form-control" required>
+                                        @{
+                                            var db = new  admin.tandienbien.gov.vn.Models.tanddbEntities();
+                                            foreach (var dv in db.DEPENDENT_UNITS.OrderBy(p=>p.ID).ToList())
+                                            {
+                                                <option value="@dv.ID" @(dv.ID==donvi.ID? Html.Raw("selected") : Html.Raw(""))>@dv.NAME</option>
+                                            }
+                                        }
+                                    </select>
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label>Ngày xét xử(*)</label>
+                                @if (Model.DATE_TIME != null)
+                                {
+                                    <input type="date" class="form-control" id="DATE_TIME" name="DATE_TIME" value="@DateTime.Parse(Model.DATE_TIME.ToString()).ToString("yyyy-MM-dd")" required>
+                                }
+                                else
+                                {
+                                    <input type="date" class="form-control" id="DATE_TIME" name="DATE_TIME" value="" required>
+                                }
+                            </div>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="disabledSelect">Cấp xét xử(*)</label>
+                                <select id="TRIAL_LEVEL_ID" name="TRIAL_LEVEL_ID" class="form-control">
+                                    @{
+                                        foreach (var lv in capxx)
+                                        {
+                                            <option value="@lv.ID">@lv.NAME_LEVEL</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Địa điểm(*)</label>
+                                <input class="form-control" id="ADDRESS" name="ADDRESS" value="@Model.ADDRESS" required>
+                            </div>
+                            @{
+                                if (Model.ID != 0)
+                                {
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i>Cập nhật</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Thêm mới </button>
+                                }
+                            }
+                            <button type="reset" class="btn btn-warning"><i class="fa fa-times-circle fa-fw"></i>Nhập lại</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

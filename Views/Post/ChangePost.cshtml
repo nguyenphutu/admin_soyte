@@ -1,0 +1,148 @@
+﻿@model admin.tandienbien.gov.vn.Models.POST
+@{
+    ViewBag.Title = "Cập nhật thông tin bài viết";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var author = (List<admin.tandienbien.gov.vn.Models.USER_PROFILE>)ViewBag.Author;
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Cập nhật thông tin bài viết</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<form action="/Post/SavePost" enctype="multipart/form-data" method="POST" role="form">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Nhập thông tin
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Tiêu đề bài viết(*)</label>
+                                <input class="form-control" id="HEADING_LVL1" name="HEADING_LVL1" value="@Model.HEADING_LVL1" required>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Anh bìa bài viết(*)
+                                </div>
+                                <div class="panel-body">
+                                    @{
+                                        if (Model.IMG_THUMS != null)
+                                        {
+                                            <img src="@Model.IMG_THUMS" style="width:150px; height:100px; float:right" />
+                                        }
+                                    }
+                                    <input accept="image/*" id="IMG_THUMS" name="IMG_THUMS" type="file"  @(Model.ID !=0 ? Html.Raw("") : Html.Raw("required")) />
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Tài liệu đính kèm
+                                </div>
+                                <div class="panel-body">
+                                    <input type="file" id="uploadFile" name="uploadFile" multiple /><br />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="disabledSelect">Chuyên mục tin(*)</label>
+                                <select id="CATEGORY_ID" name="CATEGORY_ID" class="form-control">
+                                    @{
+                                        var cat = (List<admin.tandienbien.gov.vn.Models.CATEGORy>)ViewBag.Cat;
+                                        foreach (var c in cat)
+                                        {
+                                            <option value="@c.ID" @(c.ID == Model.CATEGORY_ID ? Html.Raw("selected") : Html.Raw(""))>@c.CAT_NAME</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ngày đóng bài viết</label>
+                                @{
+                                    if (Model.CLOSE_DATE != null)
+                                    {
+                                        <input type="date" class="form-control" id="CLOSE_DATE" name="CLOSE_DATE" value="@(((DateTime)Model.CLOSE_DATE).ToString("yyyy-MM-dd"))">
+                                    }
+                                    else
+                                    {
+                                        <input type="date" class="form-control" id="CLOSE_DATE" name="CLOSE_DATE" value="">
+                                    }
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label>Lời dẫn của bài viết(*)</label>
+                                <textarea class="form-control" rows="3" id="DESCRIPTION" name="DESCRIPTION" required>@Model.DESCRIPTION</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Đường dẫn</label>
+                                <input class="form-control" id="URL" name="URL" value="@Model.URL"  @(Model.URL == "" || Model.URL == null ? Html.Raw("disabled") : Html.Raw(""))>
+                            </div>
+                            @{
+                                if (Model.STATUS_ID == 6 || Model.STATUS_ID == 5)
+                                {
+                                    <div class="form-group">
+                                        <label>Chọn loại hình hiển thị</label>
+                                        <div class="radio-inline">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="STATUS_ID" id="STATUS_ID" value="6" @(Model.STATUS_ID == 6 ? Html.Raw("checked") : Html.Raw(""))> Tin nổi bật
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="STATUS_ID" id="STATUS_ID" value="5" @(Model.STATUS_ID == 5 ? Html.Raw("checked") : Html.Raw(""))> Tin bình thường
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="STATUS_ID" id="STATUS_ID" value="14" @(Model.STATUS_ID == 14 ? Html.Raw("checked") : Html.Raw(""))> Tin tiêu điểm
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            <div class="form-group">
+                                <label>Tác giả(*)</label>
+                                <select id="ID_AUTHOR" name="ID_AUTHOR" class="form-control">
+                                    @foreach (var at in author)
+                                    {
+                                        <option value="@at.ID" @(at.ID == Model.ID_AUTHOR ? Html.Raw("selected") : Html.Raw(""))>@at.NAME</option>
+                                    }
+                                </select>
+                            </div>
+                            @{
+                                if (Model.ID != 0)
+                                {
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i>Cập nhật</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Thêm mới </button>
+                                }
+                            }
+                            <button type="reset" class="btn btn-warning"><i class="fa fa-times-circle fa-fw"></i>Nhập lại</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Nhập nội dung bài viết(*)
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <textarea id="editor1" name="CONTENT" required>@Model.CONTENT</textarea>
+                        <script>
+                            CKEDITOR.replace('editor1');
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,91 @@
+﻿@model List<admin.tandienbien.gov.vn.Models.CATEGORy>
+@{
+    ViewBag.Title = "Quản lý danh muc bài viết";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Quản lý chuyên mục bài viết</h2>
+       
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+               Danh sách các chuyên mục <a href="/QuanLyDanhmuc/ChangeCategores" class="btn btn-primary" style="float:right; margin-top: -7px;"><i class="fa fa-plus fa-fw"></i> Thêm mới chuyên mục</a>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th style="width:10%; text-align:center;">ID</th>
+                            <th style="width:35%; text-align:center;">Tên chuyên mục</th>
+                            <th style="width:45%; text-align:center;">Url</th>
+                            <th style="width:15%; text-align:center;">Trạng thái</th>
+                            <th style="width:5%; text-align:center;">Icon CSS</th>
+                            <th style="width:25%; text-align:center;">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var cat in Model)
+                            {
+                                <tr class="odd gradeX">
+                                    <td align="center">@cat.ID</td>
+                                    <td>@cat.CAT_NAME</td>
+                                    <td>@cat.URL_TITLE</td>
+                                    @{
+                                        if (cat.STATUS_ID == 1)
+                                        {
+                                            <td>Hoạt động</td>
+                                        }
+                                        else
+                                        {
+                                            <td>Ngừng hoạt động</td>
+                                        }
+                                    }
+                                    <td style="width:10%">@cat.ICON_CSS</td>
+                                    <td style="width:10%">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                                Chọn hành động
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu pull-right" role="menu">
+                                                <li>
+                                                    <a href="/QuanLyDanhmuc/ChangeCategores?cat_id=@cat.ID">Sửa thông tin</a>
+                                                </li>
+                                                @{
+                                                    if (cat.STATUS_ID == 1)
+                                                    {
+                                                        <li>
+                                                            <a href="/QuanLyDanhmuc/UpstatusCat?cat_id=@cat.ID">Khóa chuyên mục</a>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>
+                                                            <a href="/QuanLyDanhmuc/UpstatusCat?cat_id=@cat.ID">Mở khóa chuyên mục</a>
+                                                        </li>
+                                                    }
+                                                }
+                                                
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

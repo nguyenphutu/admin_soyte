@@ -1,0 +1,104 @@
+﻿@model admin.tandienbien.gov.vn.Models.THU_TUC_HANH_CHINH
+@{
+    ViewBag.Title = "Chi tiết thủ tục";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var role = int.Parse(TempData["Role"].ToString());
+}
+<style>
+    #chi-tiet-thu-tuc > tbody > tr > td:first-child{
+        width: 40%;
+    }
+</style>
+<div class="container-fluid">    
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>@Model.TEN_THU_TUC</h1>
+            <table class="table table-bordered table-striped table-hover" id="chi-tiet-thu-tuc">
+                <tbody>
+                    <tr>
+                        <td>Tên thủ tục</td>
+                        <td>@Model.TEN_THU_TUC</td>
+                    </tr>
+                    <tr>
+                        <td>Mã thủ tục</td>
+                        <td>@Model.MA_THU_TUC</td>
+                    </tr>
+                    <tr>
+                        <td>Lĩnh vực</td>
+                        <td>@Model.CATEGORy.CAT_NAME</td>
+                    </tr>
+                    <tr>
+                        <td>Loại thủ tục</td>
+                        <td>@Model.LOAI_TTHC</td>
+                    </tr>
+                    <tr>
+                        <td>Lệ phí</td>
+                        <td>@Model.PHI_LE_PHI</td>
+                    </tr>
+                    <tr>
+                        <td>Thành phần hồ sơ</td>
+                        <td>@Model.THANH_PHAN_HO_SO</td>
+                    </tr>
+                    <tr>
+                        <td>Số bộ hồ sơ</td>
+                        <td>@Model.SO_BO_HO_SO</td>
+                    </tr>
+                    <tr>
+                        <td>Thời hạn giải quyết</td>
+                        <td>@Model.THOI_HAN_GIAI_QUYET</td>
+                    </tr>
+                    <tr>
+                        <td>Trình tự thực hiện</td>
+                        <td>@Model.TRINH_TU_THUC_HIEN</td>
+                    </tr>
+                    <tr>
+                        <td>Đối tượng thực hiện</td>
+                        <td>@Model.DOI_TUONG_THUC_HIEN</td>
+                    </tr>
+                    <tr>
+                        <td>Cơ quan thực hiện</td>
+                        <td>@Model.CO_QUAN_THUC_HIEN</td>
+                    </tr>
+                    <tr>
+                        <td>Cơ quan công bố</td>
+                        <td>@Model.CO_QUAN_CONG_BO</td>
+                    </tr>
+                    <tr>
+                        <td>Cấp thực hiện</td>
+                        <td>@Model.CAP_THU_TUC.TEN_CAP</td>
+                    </tr>
+                    <tr>
+                        <td>Cách thức thực hiện</td>
+                        <td>@Model.CACH_THUC_THUC_HIEN</td>
+                    </tr>
+                    <tr>
+                        <td>Căn cứ pháp lý</td>
+                        <td>@Model.CAN_CU_PHAP_LY</td>
+                    </tr>
+                    <tr>
+                        <td>Kết quả thực hiện</td>
+                        <td>@Model.KET_QUA_THUC_HIEN</td>
+                    </tr>
+                    <tr>
+                        <td>Cơ quan phối hợp</td>
+                        <td>@Model.CO_QUAN_PHOI_HOP</td>
+                    </tr>
+                    <tr>
+                        <td>Yêu cầu điều kiện</td>
+                        <td>@Model.YEU_CAU_DIEU_KIEN</td>
+                    </tr>
+                    <tr>
+                        <td>Mẫu đơn, tờ khai</td>
+                        <td>
+                            @foreach(var file in Model.MAP_THU_TUC_FILE)
+                            {
+                                <p><a href="@file.FILE_THU_TUC.URL_FILE">@file.FILE_THU_TUC.FILE_NAME</a></p>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

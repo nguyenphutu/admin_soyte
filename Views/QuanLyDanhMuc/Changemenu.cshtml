@@ -1,0 +1,113 @@
+﻿@model admin.tandienbien.gov.vn.Models.CONFIG_MENU
+@{
+    ViewBag.Title = "Cập nhật Menu WebSite";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Cập nhật thông tin Menu WebSite</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Nhập thông tin
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form action="/QuanLyDanhMuc/SaveMenu" enctype="multipart/form-data" method="POST" role="form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Tên Menu(*)</label>
+                                <input class="form-control" id="MENU_NAME" name="MENU_NAME" value="@Model.MENU_NAME" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Icon css</label>
+                                <input class="form-control" id="ICON_CSS" name="ICON_CSS" value="@Model.ICON_CSS">
+                            </div>
+                            <div class="form-group">
+                                <label>URL</label>
+                                <input class="form-control" id="URL" name="URL" value="@Model.URL" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Hiển thị FOOTER  </label>
+                                <div class="radio-inline">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="DISPLAY_FOOTER" id="DISPLAY_FOOTER" value="true" @(Model.DISPLAY_FOOTER == 1 || Model.DISPLAY_FOOTER == null ? Html.Raw("checked") : Html.Raw(""))> Hiển thị
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="DISPLAY_FOOTER" id="DISPLAY_FOOTER" value="false" @(Model.DISPLAY_FOOTER == 0 ? Html.Raw("checked") : Html.Raw(""))> Không hiển thị
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="disabledSelect">Chọn menu cha(*)</label>
+                                <select id="PARENT_ID" name="PARENT_ID" class="form-control">
+                                    <option value="0" @(Model.PARENT_ID==0 ? Html.Raw("selected") : Html.Raw(""))>Là menu cha</option>
+                                    @{
+                                        var MenuCha = (List<admin.tandienbien.gov.vn.Models.CONFIG_MENU>)ViewBag.MenuCha;
+
+                                        foreach (var mnc in MenuCha)
+                                        {
+                                            if (Model.PARENT_ID == mnc.ID)
+                                            {
+                                                <option value="@mnc.ID" selected>@mnc.MENU_NAME</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@mnc.ID">@mnc.MENU_NAME</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="disabledSelect">Kiểu hiển thị</label>
+                                <select id="STATUS_ID" name="STATUS_ID" class="form-control">
+                                    @{
+                                        var listDisp = (List<admin.tandienbien.gov.vn.Models.STATUS>)ViewBag.DispType;
+                                        foreach (var disp in listDisp)
+                                        {
+                                            if (Model.STATUS_ID == disp.ID)
+                                            {
+                                                <option value="@disp.ID" selected>@disp.NAME</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@disp.ID">@disp.NAME</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Thứ tự sắp sếp</label>
+                                <input class="form-control" id="STT" name="STT" value="@Model.STT" required>
+                            </div>
+                            @{
+                                if (Model.ID != 0)
+                                {
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i>Cập nhật</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Thêm mới </button>
+                                }
+                            }
+                            <button type="reset" class="btn btn-warning"><i class="fa fa-times-circle fa-fw"></i>Nhập lại</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,36 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Nhập thông tin
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form action="/Home/SavePass" enctype="multipart/form-data" method="POST" role="form">
+                        @Html.AntiForgeryToken()
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Mật khẩu cũ(*)</label>
+                                <input type="password" class="form-control" id="PASS_OLD" name="PASS_OLD"  required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mật khẩu mới(*)</label>
+                                <input type="password" class="form-control" id="PASS_NEW" name="PASS_NEW" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Nhập lại mật khẩu mới(*)</label>
+                                <input type="password" class="form-control" id="REPASS_NEW" name="REPASS_NEW" required>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <div class="col-lg-6" style="padding-top:25px;">
+                            
+                            <button type="submit" class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i>Cập nhật</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-mail-reply fa-fw"></i>Thoát</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
